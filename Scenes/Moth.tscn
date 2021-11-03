@@ -4,13 +4,16 @@
 [ext_resource path="res://Script/Moth.cs" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 23.8348
-height = 19.5288
+radius = 5.06574
+height = 6.99606
 
-[node name="Moth" type="Area2D"]
+[node name="Moth" type="RigidBody2D"]
+collision_mask = 0
+gravity_scale = 0.0
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
