@@ -3,6 +3,8 @@ using System;
 
 public class Bat : Area2D
 {
+
+    [Signal] public delegate void Eat();
     [Export] private int _speed = 400;
     private Vector2 _screenSize;
 
@@ -10,6 +12,15 @@ public class Bat : Area2D
     {
         _screenSize = GetViewport().Size;
     }
+
+    public void OnBatBodyEntered(PhysicsBody2D body)
+    {
+        GD.Print("Body enter : " + body.GetType());
+        EmitSignal("Eat");
+        body.QueueFree();
+        // GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
+    }
+
 
     public override void _Process(float delta)
     {
@@ -39,7 +50,7 @@ public class Bat : Area2D
         var sprite = GetNode<Sprite>("Sprite");
 
 
-       // FIXME :  Use a well oriented asset 
+        // FIXME :  Use a well oriented asset 
         if (velocity.Length() > 0)
         {
             velocity = velocity.Normalized() * _speed;
@@ -54,8 +65,6 @@ public class Bat : Area2D
         {
             sprite.FlipV = (velocity.y > 0);
         }
-
- 
 
 
         Position += velocity * delta;

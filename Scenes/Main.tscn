@@ -29,10 +29,12 @@ curve = SubResource( 1 )
 
 [node name="MothSpawnLocation" type="PathFollow2D" parent="MothPath"]
 position = Vector2( -0.481766, 1.75781 )
-rotation = -0.00155514
+rotation = -0.00155517
 
 [node name="BatPlayer" parent="." instance=ExtResource( 3 )]
 
 [node name="Moth" parent="." instance=ExtResource( 1 )]
 position = Vector2( 352, 400 )
 scale = Vector2( 0.25, 0.25 )
+
+[connection signal="Eat" from="BatPlayer" to="." method="OnBatPlayerEat"]

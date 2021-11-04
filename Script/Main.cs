@@ -12,7 +12,11 @@ public class Main : Node2D
     {
 
     }
-
+    public void OnBatPlayerEat()
+    {
+        _score++;
+        GD.Print("score : " + _score);
+    }
     private float RangeRange(float min, float max)
     {
         return (float)_random.NextDouble() * (max - min) + min;
