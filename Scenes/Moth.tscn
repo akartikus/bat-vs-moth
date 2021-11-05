@@ -7,9 +7,9 @@
 radius = 5.06574
 height = 6.99606
 
-[node name="Moth" type="RigidBody2D"]
+[node name="Moth" type="Area2D"]
 collision_layer = 2
-gravity_scale = 0.0
+collision_mask = 5
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Bat : Area2D
+public class Bat : KinematicBody2D
 {
 
     [Signal] public delegate void Eat();
@@ -13,14 +13,11 @@ public class Bat : Area2D
         _screenSize = GetViewport().Size;
     }
 
-    public void OnBatBodyEntered(PhysicsBody2D body)
+    public void OnMouthAreaEntered(Area2D area)
     {
-        GD.Print("Body enter : " + body.GetType());
         EmitSignal("Eat");
-        body.QueueFree();
-        // GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
+        area.QueueFree();
     }
-
 
     public override void _Process(float delta)
     {
@@ -58,14 +55,14 @@ public class Bat : Area2D
         }
         if (velocity.x != 0)
         {
-            sprite.FlipV = false;
-            sprite.FlipH = !(velocity.x < 0);
+            var flipH = (velocity.x > 0) ? -1 : 1;
+            Scale = new Vector2(flipH, Scale.y);
         }
         else if (velocity.y != 0)
         {
-            sprite.FlipV = (velocity.y > 0);
+            var flipV = (velocity.y > 0) ? -1 : 1;
+            Scale = new Vector2(Scale.x, flipV);
         }
-
 
         Position += velocity * delta;
 
