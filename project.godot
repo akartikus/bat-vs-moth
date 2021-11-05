@@ -43,6 +43,12 @@ down={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="bat"
+2d_physics/layer_2="insect"
+2d_physics/layer_3="environement"
+
 [mono]
 
 debugger_agent/wait_for_debugger=true

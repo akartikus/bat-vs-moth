@@ -5,20 +5,46 @@ public class Main : Node2D
 {
     [Export] private PackedScene Moth;
 
-    private int _score;
     private Random _random = new Random();
+
+    private int _score;
 
     public override void _Ready()
     {
-
+        NewGame();
     }
     public void OnBatPlayerEat()
     {
         _score++;
         GD.Print("score : " + _score);
     }
-    private float RangeRange(float min, float max)
+
+    public void OnMothTimerTimeout()
     {
-        return (float)_random.NextDouble() * (max - min) + min;
+        var mobSpawnLocation = GetNode<PathFollow2D>("MothPath/MothSpawnLocation");
+        mobSpawnLocation.Offset = _random.Next();
+
+        var mothInstance = (Moth)Moth.Instance();
+
+        mothInstance.Position = mobSpawnLocation.Position;
+
+        var computerPosition = GetNode<Area2D>("Computer").Position;
+        mothInstance.LookAt(computerPosition);
+
+        mothInstance.Destination = computerPosition;
+        AddChild(mothInstance);
+
     }
+    public void OnStartTimerTimeout()
+    {
+        GetNode<Timer>("MothTimer").Start();
+    }
+
+    public void NewGame()
+    {
+        _score = 0;
+        GetNode<Timer>("StartTimer").Start();
+    }
+
+
 }
