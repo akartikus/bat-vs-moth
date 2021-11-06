@@ -3,11 +3,14 @@ using System;
 
 public class Bat : KinematicBody2D
 {
-
-    [Signal] public delegate void Eat();
+    public const int ComboPointGoal = 3;
+    [Signal] public delegate void OnEat();
     [Export] private int _speed = 400;
+    [Export] private PackedScene Bullet;
     private Vector2 _screenSize;
+    private int _comboPoint = 0;
 
+    private bool _isComboReady;
     public override void _Ready()
     {
         _screenSize = GetViewport().Size;
@@ -15,7 +18,24 @@ public class Bat : KinematicBody2D
 
     public void OnMouthAreaEntered(Area2D area)
     {
-        EmitSignal("Eat");
+        if (area.GetType() == typeof(Moth))
+        {
+            EmitSignal("OnEat");
+        }
+        else if (area.GetType() == typeof(Moskito))
+        {
+            if (_isComboReady)
+            {
+                GD.Print("Combo already ready");
+                return;
+            }
+            _comboPoint++;
+            if (_comboPoint == ComboPointGoal)
+            {
+                _isComboReady = true;
+            }
+        }
+
         area.QueueFree();
     }
 
@@ -41,6 +61,15 @@ public class Bat : KinematicBody2D
         if (Input.IsActionPressed("up"))
         {
             velocity.y -= 1;
+        }
+
+        if (Input.IsActionJustPressed("shoot"))
+        {
+            if (_isComboReady)
+            {
+                Shoot();
+                _isComboReady = false;
+            }
         }
 
         //var animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
@@ -70,6 +99,32 @@ public class Bat : KinematicBody2D
             x: Mathf.Clamp(Position.x, 0, _screenSize.x),
             y: Mathf.Clamp(Position.y, 0, _screenSize.y)
         );
+    }
+
+    public async void Shoot()
+    {
+        var waveTimer = GetNode<Timer>("WaveTimer");
+        waveTimer.Start();
+
+        for (int wave = 0; wave < 5; wave++)
+        {
+            if (wave != 0) await ToSignal(waveTimer, "timeout");
+            var nbBullets = 10;
+            var rotation = -30;
+            var rotationStep = 5;
+
+            for (int i = 0; i < nbBullets; i++)
+            {
+                var b = (SoundBullet)Bullet.Instance();
+                b.Position = Position;
+                b.Scale = -Scale;
+                rotation = rotation + rotationStep;
+                b.RotationDegrees = rotation;
+
+                GetNode<Node2D>("../").AddChild(b);
+            }
+            waveTimer.Start();
+        }
     }
 
 }

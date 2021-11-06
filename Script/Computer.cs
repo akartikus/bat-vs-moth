@@ -4,6 +4,8 @@ using System;
 public class Computer : Area2D
 {
     [Export] private int _hpMax = 3;
+
+    [Signal] public delegate void OnDie();
     private int _hp = 3;
 
     public override void _Ready()
@@ -20,8 +22,7 @@ public class Computer : Area2D
         }
         else
         {
-            // Game over
-            GD.Print("Game Over!!!!");
+            EmitSignal("OnDie");
         }
         // TODO do something with area
     }
