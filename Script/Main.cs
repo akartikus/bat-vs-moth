@@ -5,10 +5,12 @@ using System.Collections.Generic;
 public class Main : Node2D
 {
     [Export] private PackedScene Moth;
+    [Export] private PackedScene Moskito;
 
     private Random _random = new Random();
     private Label _scoreLabel;
     private Label _hpLabel;
+    private Label _comboLabel;
     private List<Vector2> _windowsPosition;
 
     private int _score;
@@ -17,6 +19,7 @@ public class Main : Node2D
     {
         _scoreLabel = GetNode<Label>("Control/ColorRect/VBoxContainer/score");
         _hpLabel = GetNode<Label>("Control/ColorRect/VBoxContainer/hp");
+        _comboLabel = GetNode<Label>("Control/ColorRect/VBoxContainer/combo");
         InitializeWindowsPosition();
         NewGame();
     }
@@ -28,24 +31,42 @@ public class Main : Node2D
 
     public void OnComputerDie()
     {
-        GD.Print("Game over");
-        //GetTree().Paused = true;
-        GD.Print("In pause");
+        // Add some animation
+        GetTree().ChangeScene("res://Scenes/GameOver.tscn");
     }
     public void OnMothTimerTimeout()
     {
         spawnMoth();
+        GetNode<Timer>("MothTimer").WaitTime += 0.01f;
+    }
+
+    public void OnMoskitoTimerTimeout()
+    {
+        spawnMoskito();
     }
 
     public void OnStartTimerTimeout()
     {
         GetNode<Timer>("MothTimer").Start();
+        GetNode<Timer>("MoskitoTimer").Start();
     }
 
     public void NewGame()
     {
         _score = 0;
         GetNode<Timer>("StartTimer").Start();
+    }
+
+    public void OnBatPlayerUpdateCombo(int point)
+    {
+        if (point < 3)
+        {
+            _comboLabel.Text = "Combo point : " + point;
+        }
+        else
+        {
+            _comboLabel.Text = "Combo ready!!!!!!";
+        }
     }
 
     private void InitializeWindowsPosition() => _windowsPosition = new List<Vector2>{
@@ -71,6 +92,22 @@ public class Main : Node2D
         mothInstance.Destination = _windowsPosition[i];
 
         GetNode<Node2D>("Insects").AddChild(mothInstance);
+    }
+
+    private void spawnMoskito()
+    {
+        var screenSize = GetViewport().GetVisibleRect().Size;
+        var posX = RandRange(0, (int)screenSize.x);
+        var posY = RandRange(0, (int)screenSize.y);
+
+        var moskitoInstance = (Moskito)Moskito.Instance();
+        moskitoInstance.Position = new Vector2(posX, posY);
+        GetNode<Node2D>("Insects").AddChild(moskitoInstance);
+    }
+
+    private float RandRange(float min, float max)
+    {
+        return (float)_random.NextDouble() * (max - min) + min;
     }
 
 }

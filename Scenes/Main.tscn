@@ -18,9 +18,13 @@ font_data = ExtResource( 5 )
 [node name="Main" type="Node2D"]
 script = ExtResource( 2 )
 Moth = ExtResource( 1 )
+Moskito = ExtResource( 6 )
 
 [node name="MothTimer" type="Timer" parent="."]
 wait_time = 2.0
+
+[node name="MoskitoTimer" type="Timer" parent="."]
+wait_time = 5.0
 
 [node name="ScoreTimer" type="Timer" parent="."]
 
@@ -54,10 +58,10 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="Control"]
-margin_left = 36.5858
-margin_top = 31.3431
-margin_right = 243.586
-margin_bottom = 96.3431
+margin_left = 37.0
+margin_top = 31.0
+margin_right = 211.0
+margin_bottom = 116.0
 color = Color( 0.156863, 0.227451, 0.360784, 0.694118 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -73,35 +77,29 @@ __meta__ = {
 }
 
 [node name="score" type="Label" parent="Control/ColorRect/VBoxContainer"]
-margin_top = 12.0
-margin_right = 186.0
-margin_bottom = 30.0
+margin_top = 11.0
+margin_right = 156.0
+margin_bottom = 29.0
 custom_fonts/font = SubResource( 2 )
 text = "Score : 0"
 
 [node name="hp" type="Label" parent="Control/ColorRect/VBoxContainer"]
-margin_top = 34.0
-margin_right = 186.0
-margin_bottom = 52.0
+margin_top = 33.0
+margin_right = 156.0
+margin_bottom = 51.0
 custom_fonts/font = SubResource( 2 )
 text = "Computer hp : 0"
 
-[node name="Moskito" parent="." instance=ExtResource( 6 )]
-position = Vector2( 419.435, 118.04 )
-
-[node name="Moskito2" parent="." instance=ExtResource( 6 )]
-position = Vector2( 646.358, 88.6737 )
-
-[node name="Moskito3" parent="." instance=ExtResource( 6 )]
-position = Vector2( 542.24, 164.76 )
-
-[node name="Moskito4" parent="." instance=ExtResource( 6 )]
-position = Vector2( 703.756, 212.814 )
-
-[node name="Moskito5" parent="." instance=ExtResource( 6 )]
-position = Vector2( 536.901, 282.226 )
+[node name="combo" type="Label" parent="Control/ColorRect/VBoxContainer"]
+margin_top = 55.0
+margin_right = 156.0
+margin_bottom = 73.0
+custom_fonts/font = SubResource( 2 )
+text = "combo point : 0"
 
 [connection signal="timeout" from="MothTimer" to="." method="OnMothTimerTimeout"]
+[connection signal="timeout" from="MoskitoTimer" to="." method="OnMoskitoTimerTimeout"]
 [connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
 [connection signal="OnEat" from="BatPlayer" to="." method="OnBatPlayerEat"]
+[connection signal="UpdateCombo" from="BatPlayer" to="." method="OnBatPlayerUpdateCombo"]
 [connection signal="OnDie" from="Computer" to="." method="OnComputerDie"]

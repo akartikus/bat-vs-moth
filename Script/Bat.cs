@@ -5,8 +5,11 @@ public class Bat : KinematicBody2D
 {
     public const int ComboPointGoal = 3;
     [Signal] public delegate void OnEat();
+    [Signal] public delegate void UpdateCombo(int point);
     [Export] private int _speed = 400;
     [Export] private PackedScene Bullet;
+
+
     private Vector2 _screenSize;
     private int _comboPoint = 0;
 
@@ -20,16 +23,17 @@ public class Bat : KinematicBody2D
     {
         if (area.GetType() == typeof(Moth))
         {
-            EmitSignal("OnEat");
+            EmitSignal(nameof(OnEat));
         }
         else if (area.GetType() == typeof(Moskito))
         {
             if (_isComboReady)
             {
-                GD.Print("Combo already ready");
                 return;
             }
             _comboPoint++;
+            GD.Print("--> " + nameof(OnEat));
+            EmitSignal(nameof(UpdateCombo), _comboPoint);
             if (_comboPoint == ComboPointGoal)
             {
                 _isComboReady = true;
@@ -69,6 +73,8 @@ public class Bat : KinematicBody2D
             {
                 Shoot();
                 _isComboReady = false;
+                _comboPoint = 0;
+                EmitSignal("UpdateCombo", _comboPoint);
             }
         }
 
