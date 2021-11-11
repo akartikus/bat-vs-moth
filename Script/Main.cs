@@ -31,13 +31,15 @@ public class Main : Node2D
 
     public void OnComputerDie()
     {
-        // Add some animation
-        GetTree().ChangeScene("res://Scenes/GameOver.tscn");
+        var global = GetNode<Global>("/root/Global");
+        global.Score = _score;
+        global.GotoScene("res://Scenes/GameOver.tscn");
+        //GetTree().ChangeScene("res://Scenes/GameOver.tscn");
     }
     public void OnMothTimerTimeout()
     {
         spawnMoth();
-        GetNode<Timer>("MothTimer").WaitTime += 0.01f;
+        GetNode<Timer>("MothTimer").WaitTime -= 0.01f;
     }
 
     public void OnMoskitoTimerTimeout()

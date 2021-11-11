@@ -5,7 +5,7 @@ public class SoundBullet : Area2D
 {
 
     private int _speed = 750;
-    private float _ttl = 0.5f;
+    private float _ttl = 0.75f;
     private float _timer = 0f;
 
     public override void _PhysicsProcess(float delta)

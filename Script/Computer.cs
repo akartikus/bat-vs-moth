@@ -4,7 +4,6 @@ using System;
 public class Computer : Area2D
 {
     [Export] private int _hpMax = 3;
-
     [Signal] public delegate void OnDie();
     private int _hp = 3;
 
@@ -24,6 +23,5 @@ public class Computer : Area2D
         {
             EmitSignal("OnDie");
         }
-        // TODO do something with area
     }
 }

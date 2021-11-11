@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Prototype/bat.png" type="Texture" id=1]
 [ext_resource path="res://Script/Bat.cs" type="Script" id=2]
 [ext_resource path="res://Scenes/SoundBullet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Script/BatCombo.cs" type="Script" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.0
@@ -30,5 +31,8 @@ shape = SubResource( 2 )
 
 [node name="WaveTimer" type="Timer" parent="."]
 wait_time = 0.1
+
+[node name="Combo" type="Node2D" parent="."]
+script = ExtResource( 4 )
 
 [connection signal="area_entered" from="Mouth" to="." method="OnMouthAreaEntered"]

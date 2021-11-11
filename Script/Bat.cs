@@ -3,17 +3,16 @@ using System;
 
 public class Bat : KinematicBody2D
 {
-    public const int ComboPointGoal = 3;
-    [Signal] public delegate void OnEat();
-    [Signal] public delegate void UpdateCombo(int point);
     [Export] private int _speed = 400;
     [Export] private PackedScene Bullet;
-
+    [Signal] public delegate void OnEat();
+    [Signal] public delegate void UpdateCombo(int point);
+    public const int ComboPointGoal = 3;
 
     private Vector2 _screenSize;
     private int _comboPoint = 0;
-
     private bool _isComboReady;
+
     public override void _Ready()
     {
         _screenSize = GetViewport().Size;
@@ -31,9 +30,10 @@ public class Bat : KinematicBody2D
             {
                 return;
             }
-            _comboPoint++;
-            GD.Print("--> " + nameof(OnEat));
-            EmitSignal(nameof(UpdateCombo), _comboPoint);
+            //EmitSignal(nameof(UpdateCombo), _comboPoint);
+            _comboPoint += 1;
+            GetNode<BatCombo>("Combo").EarnCP(_comboPoint);
+
             if (_comboPoint == ComboPointGoal)
             {
                 _isComboReady = true;
@@ -74,13 +74,12 @@ public class Bat : KinematicBody2D
                 Shoot();
                 _isComboReady = false;
                 _comboPoint = 0;
-                EmitSignal("UpdateCombo", _comboPoint);
+                GetNode<BatCombo>("Combo").InitializeCP();
+                //EmitSignal("UpdateCombo", _comboPoint);
             }
         }
-
         //var animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
         var sprite = GetNode<Sprite>("Sprite");
-
 
         // FIXME :  Use a well oriented asset 
         if (velocity.Length() > 0)
@@ -88,6 +87,7 @@ public class Bat : KinematicBody2D
             velocity = velocity.Normalized() * _speed;
             // animatedSprite.Play();
         }
+
         if (velocity.x != 0)
         {
             var flipH = (velocity.x > 0) ? -1 : 1;
@@ -100,7 +100,6 @@ public class Bat : KinematicBody2D
         }
 
         Position += velocity * delta;
-
         Position = new Vector2(
             x: Mathf.Clamp(Position.x, 0, _screenSize.x),
             y: Mathf.Clamp(Position.y, 0, _screenSize.y)
