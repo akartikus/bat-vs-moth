@@ -20,6 +20,12 @@ public class GameOver : Control
     }
     public void OnReplayPressed()
     {
-        GetTree().ChangeScene("res://Scenes/Main.tscn");
+        var global = GetNode<Global>("/root/Global");
+        global.GotoScene("res://Scenes/Main.tscn");
+    }
+    public void OnMenuPressed()
+    {
+        var global = GetNode<Global>("/root/Global");
+        global.GotoScene("res://Scenes/Menu.tscn");
     }
 }
