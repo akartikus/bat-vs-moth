@@ -78,25 +78,20 @@ public class Bat : KinematicBody2D
                 //EmitSignal("UpdateCombo", _comboPoint);
             }
         }
-        //var animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
-        var sprite = GetNode<Sprite>("Sprite");
+        var animatedSprite = GetNode<AnimatedSprite>("Sprite");
+        //var sprite = GetNode<Sprite>("Sprite");
 
         // FIXME :  Use a well oriented asset 
         if (velocity.Length() > 0)
         {
             velocity = velocity.Normalized() * _speed;
-            // animatedSprite.Play();
+            animatedSprite.Play();
         }
 
         if (velocity.x != 0)
         {
             var flipH = (velocity.x > 0) ? -1 : 1;
             Scale = new Vector2(flipH, Scale.y);
-        }
-        else if (velocity.y != 0)
-        {
-            var flipV = (velocity.y > 0) ? -1 : 1;
-            Scale = new Vector2(Scale.x, flipV);
         }
 
         Position += velocity * delta;
