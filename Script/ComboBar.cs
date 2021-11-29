@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class LifeBar : Container
+public class ComboBar : Container
 {
     private int _max = 3;
     private int _currentValue = 0;

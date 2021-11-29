@@ -19,15 +19,13 @@ tracks/0/keys = {
 "values": [  ]
 }
 
-[node name="LifeBar" type="Container"]
+[node name="ComboBar" type="Container"]
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureProgress" type="TextureProgress" parent="."]
-margin_right = 396.0
-margin_bottom = 53.0
 max_value = 30.0
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 3 )
