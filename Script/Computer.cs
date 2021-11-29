@@ -3,9 +3,10 @@ using System;
 
 public class Computer : Area2D
 {
-    [Export] private int _hpMax = 3;
+    [Export] private int _hpMax = 5;
     [Signal] public delegate void OnDie();
-    private int _hp = 3;
+    [Signal] public delegate void HPChanged(int hp);
+    private int _hp = 5;
 
     public override void _Ready()
     {
@@ -17,6 +18,7 @@ public class Computer : Area2D
         if (_hp > 0)
         {
             _hp--;
+            EmitSignal(nameof(HPChanged), _hp);
             GD.Print("HP : " + _hp);
         }
         else

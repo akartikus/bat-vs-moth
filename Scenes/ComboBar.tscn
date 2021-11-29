@@ -6,6 +6,9 @@
 
 [sub_resource type="Animation" id=1]
 resource_name = "shake"
+length = 0.5
+loop = true
+step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("TextureProgress:value")
 tracks/0/interp = 1
@@ -18,6 +21,30 @@ tracks/0/keys = {
 "update": 0,
 "values": [  ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("TextureProgress:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.151514, 0.392698 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, -2.0, 2.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("TextureProgress:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.25 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1.05, 1.05 ) ]
+}
 
 [node name="ComboBar" type="Container"]
 script = ExtResource( 1 )
@@ -26,6 +53,11 @@ __meta__ = {
 }
 
 [node name="TextureProgress" type="TextureProgress" parent="."]
+margin_left = 1.13485
+margin_right = 129.135
+margin_bottom = 16.0
+rect_scale = Vector2( 1.05, 1.05 )
+rect_pivot_offset = Vector2( 59.3547, 7.27373 )
 max_value = 30.0
 texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 3 )

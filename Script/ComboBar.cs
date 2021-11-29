@@ -13,17 +13,26 @@ public class ComboBar : Container
     }
     public void OnPlayerCPChanged(int newCP)
     {
-        newCP *= 10;
         AnimateValue(_currentValue, newCP);
-        _currentValue = newCP;
     }
+
     private void AnimateValue(int start, int end)
     {
+        end *= 10;
         var tween = GetNode<Tween>("Tween");
         var textureProgress = GetNode<TextureProgress>("TextureProgress");
         var transitionType = end == _max ? Tween.TransitionType.Bounce : Tween.TransitionType.Linear;
         tween.InterpolateProperty(textureProgress, "value", start, end, 0.5f, transitionType, Tween.EaseType.Out);
         tween.Start();
-        GetNode<AnimationPlayer>("AnimationPlayer").Play("shake");
+        _currentValue = end;
+        if (_currentValue == _max)
+        {
+            GetNode<AnimationPlayer>("AnimationPlayer").Play("shake");
+        }
+        else
+        {
+            textureProgress.RectRotation = 0;
+            GetNode<AnimationPlayer>("AnimationPlayer").Stop();
+        }
     }
 }
